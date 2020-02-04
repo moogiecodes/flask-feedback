@@ -11,26 +11,7 @@
 
 <body>
   {% block body %}
-  <h1>Create a New Account</h1>
-
-  <form method='POST'>
-    {{ form.hidden_tag() }}
-
-    {% for field in form 
-    if field.widget.input_type != 'hidden' %}
-    <div class='form-group'>
-      {{ field.label }}
-      {{ field }}
-    </div>
-    <p>
-      {% for error in field.errors %}
-      {{ error }}
-      {% endfor %}
-    </p>
-    {% endfor %}
-    <button class='btn btn-info' type='submit'>Submit</button>
-  </form>
-
+    CONTENT GOES HERE
   {% endblock %}
 </body>
 

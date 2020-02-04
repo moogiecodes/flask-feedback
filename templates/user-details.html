@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} User Information {% endblock %}
+
+{% block body %}
+
+<ul class="list-group">
+  <li class="list-group-item list-group-item-info">Full name: {{ user.first_name }} {{ user.last_name }}</li>
+  <li class="list-group-item list-group-item-info">Username: {{ user.username }}</li>
+  <li class="list-group-item list-group-item-info">Email: {{ user.email }}</li>
+</ul>
+
+<a class="btn btn-danger" href="/logout">Log out</a>
+
+{% for f in feedback_list %}
+  <a href="/feedback/{{ f.id }}/update">Edit</a>
+  <button type="submit" formaction="feedback/{{ f.id }}/delete">Delete</button>
+{% endfor %}
+
+
+<a href="/users/{{ user.username }}/feedback/add">Add feedback</a>
+{% endblock %}

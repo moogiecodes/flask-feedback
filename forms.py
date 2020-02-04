@@ -7,20 +7,34 @@ BSTRAP_CLASS: {'class': 'form-control'}
 
 
 class UserRegistration(FlaskForm):
-    username = StringField('Username', validators=[
-                           InputRequired(), Length(max=20)])
-    password = PasswordField('Password', validators=[
-                             InputRequired(), Length(min=6)])
-    email = StringField('Username', validators=[
-                        InputRequired(), Length(max=50)])
-    first_name = StringField('Username', validators=[
-                             InputRequired(), Length(max=30)])
-    last_name = StringField('Username', validators=[
-                            InputRequired(), Length(max=30)])
+    username = StringField('Username',
+                           validators=[InputRequired(), Length(max=20)],
+                           render_kw=BSTRAP_CLASS)
+    password = PasswordField('Password',
+                             validators=[InputRequired(), Length(min=6)],
+                             render_kw=BSTRAP_CLASS)
+    email = StringField('Email',
+                        validators=[InputRequired(), Length(max=50)],
+                        render_kw=BSTRAP_CLASS)
+    first_name = StringField('First Name',
+                             validators=[InputRequired(), Length(max=30)],
+                             render_kw=BSTRAP_CLASS)
+    last_name = StringField('Last Name',
+                            validators=[InputRequired(), Length(max=30)],
+                            render_kw=BSTRAP_CLASS)
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[
-                           InputRequired(), Length(max=20)])
-    password = PasswordField('Password', validators=[
-                             InputRequired(), Length(min=6)])
+    username = StringField('Username',
+                           validators=[InputRequired(), Length(max=20)],
+                           render_kw=BSTRAP_CLASS)
+    password = PasswordField('Password',
+                             validators=[InputRequired(), Length(min=6)],
+                             render_kw=BSTRAP_CLASS)
+
+
+class AddFeedbackForm(FlaskForm):
+    title = StringField("Title",
+                        validators=[InputRequired(), Length(max=100)])
+    content = TextAreaField("Content",
+                            validators=[InputRequired()])

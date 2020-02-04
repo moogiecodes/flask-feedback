@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %} User Registration {% endblock %}
+{% block title %} Add Feedback {% endblock %}
 
 {% block body %}
-<h1>Create a New Account</h1>
+<h1>Add Feedback</h1>
 
 <form method='POST'>
   {{ form.hidden_tag() }}
@@ -20,7 +20,6 @@
     {% endfor %}
   </p>
   {% endfor %}
-  <button class='btn btn-info' type='submit'>Submit</button>
+  <button class='btn btn-info' type='submit'>Add</button>
 </form>
-<a href="/login" class="btn btn-success">Log in</a>
 {% endblock %}
