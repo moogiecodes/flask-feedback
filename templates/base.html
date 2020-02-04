@@ -6,10 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{% block title %} PLACE TITLE HERE {% endblock %}</title>
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
 </head>
 
 <body>
   {% block body %}
+  <h1>Create a New Account</h1>
+
+  <form method='POST'>
+    {{ form.hidden_tag() }}
+
+    {% for field in form 
+    if field.widget.input_type != 'hidden' %}
+    <div class='form-group'>
+      {{ field.label }}
+      {{ field }}
+    </div>
+    <p>
+      {% for error in field.errors %}
+      {{ error }}
+      {% endfor %}
+    </p>
+    {% endfor %}
+    <button class='btn btn-info' type='submit'>Submit</button>
+  </form>
 
   {% endblock %}
 </body>
