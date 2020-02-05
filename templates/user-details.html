@@ -10,13 +10,21 @@
   <li class="list-group-item list-group-item-info">Email: {{ user.email }}</li>
 </ul>
 
-<a class="btn btn-danger" href="/logout">Log out</a>
+<form method='POST'>
+  <a class="btn btn-danger" href="/logout">Log out</a>
 
-{% for f in feedback_list %}
-  <a href="/feedback/{{ f.id }}/update">Edit</a>
-  <button type="submit" formaction="feedback/{{ f.id }}/delete">Delete</button>
-{% endfor %}
+  {% for f in feedback_list %}
+  <p>
+    <h3>{{ f.title }}
+      <a href="/feedback/{{ f.id }}/update" class='btn btn-info small'>Edit</a>
+      <button class='btn btn-info small' type="submit" formaction="/feedback/{{ f.id }}/delete">Delete</button>
+    </h3>
+  </p>
+  {% endfor %}
 
 
-<a href="/users/{{ user.username }}/feedback/add">Add feedback</a>
+  <a class='btn btn-info' href="/users/{{ user.username }}/feedback/add">Add feedback</a>
+  <button class='btn btn-info' type='submit' formaction="/users/{{ user.username }}/delete">Delete User</button>
+</form>
+
 {% endblock %}

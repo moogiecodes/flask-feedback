@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, PasswordField
 from wtforms.validators import InputRequired, Optional, Email, Length
 
-BSTRAP_CLASS: {'class': 'form-control'}
+BSTRAP_CLASS = {'class': 'form-control'}
 # sets HTML class attr to form-control, for input fields
 
 

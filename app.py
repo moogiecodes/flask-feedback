@@ -1,7 +1,7 @@
 """Flask user/login-logout feedback app."""
 
 from flask import Flask, request, render_template, redirect, session, flash
-from models import db, connect_db, User
+from models import db, connect_db, User, Feedback
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import UserRegistration, LoginForm, AddFeedbackForm
 
@@ -10,6 +10,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///feedback_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = 'waljf34riwantogoonvacation'
+
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -70,6 +72,7 @@ def logout_user():
 @app.route('/users/<username>')
 def show_user_details(username):
     """ Return "you made it!" if logged in. """
+
     if "user_id" in session and username == session["user_id"]:
         user = User.query.filter_by(username=session["user_id"]).first()
         return render_template("user-details.html", user=user, feedback_list=user.feedback)
@@ -80,7 +83,13 @@ def show_user_details(username):
 
 @app.route("/users/<username>/delete")
 def delete_user(username):
-    return
+
+    if "user_id" in session and username == session["user_id"]:
+        user = User.query.filter_by(username=session["user_id"]).first()
+        db.session.delete(user)
+        db.session.commit()
+
+    return redirect('/')
 
 
 @app.route("/users/<username>/feedback/add", methods=["GET", "POST"])
@@ -90,18 +99,40 @@ def add_user_feedback(username):
         if form.validate_on_submit():
             title = form.title.data
             content = form.content.data
-            feedback = Feedback(title=title, content=content, username=username)
+            feedback = Feedback(
+                title=title, content=content, username=username)
+
+            db.session.add(feedback)
+            db.session.commit()
             return redirect(f"/users/{username}")
         else:
             return render_template("add-feedback-form.html", form=form)
-            
+    return redirect('/')
 
 
-@app.route("/feedback/<feedback-id>/update", methods=["GET", "POST"])
+@app.route("/feedback/<feedback_id>/update", methods=["GET", "POST"])
 def update_feedback(feedback_id):
-    return
+    user_feedback = Feedback.query.filter_by(id=feedback_id).first()
+
+    if session.get('user_id') == user_feedback.username:
+        form = AddFeedbackForm(obj=user_feedback)
+        if form.validate_on_submit():
+            user_feedback.title = form.title.data
+            user_feedback.content = form.content.data
+
+            db.session.commit()
+            return redirect(f"/users/{user_feedback.username}")
+        else:
+            return render_template("update-feedback-form.html", form=form)
+    return redirect('/')
 
 
-@app.route("/feedback/<feedback-id>/delete", methods=["POST"])
+@app.route("/feedback/<feedback_id>/delete", methods=["POST"])
 def delete_feedback(feedback_id):
-    return
+    user_feedback = Feedback.query.filter_by(id=feedback_id).first()
+
+    if session.get('user_id') == user_feedback.username:
+        db.session.delete(user_feedback)
+        db.session.commit()
+        return redirect(f'/users/{user_feedback.username}')
+    return redirect('/')
